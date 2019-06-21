@@ -352,20 +352,6 @@ var physPageSize uintptr
 // if accessed. Used only for debugging the runtime.
 
 func mallocinit() {
-	if debug.mytrace == 1 {
-		println("heapAddrBits: ", heapAddrBits)
-		println("maxAlloc: ", maxAlloc)
-		println("heapArenaBytes: ", heapArenaBytes)
-		println("logHeapArenaBytes: ", logHeapArenaBytes)
-		println("heapArenaBitmapBytes: ", heapArenaBitmapBytes)
-		println("pagesPerArena: ", pagesPerArena)
-		println("arenaL1Bits: ", arenaL1Bits)
-		println("arenaL2Bits: ", arenaL2Bits)
-		println("arenaL1Shift: ", arenaL1Shift)
-		println("arenaBits: ", arenaBits)
-		println("arenaBaseOffset: ", arenaBaseOffset)
-
-	}
 	if class_to_size[_TinySizeClass] != _TinySize {
 		throw("bad TinySizeClass")
 	}
@@ -522,6 +508,20 @@ func mallocinit() {
 		hint := (*arenaHint)(mheap_.arenaHintAlloc.alloc())
 		hint.addr = p
 		hint.next, mheap_.arenaHints = mheap_.arenaHints, hint
+	}
+	if debug.mytrace == 1 {
+		println("heapAddrBits: ", heapAddrBits)
+		println("maxAlloc: ", maxAlloc)
+		println("heapArenaBytes: ", heapArenaBytes)
+		println("logHeapArenaBytes: ", logHeapArenaBytes)
+		println("heapArenaBitmapBytes: ", heapArenaBitmapBytes)
+		println("pagesPerArena: ", pagesPerArena)
+		println("arenaL1Bits: ", arenaL1Bits)
+		println("arenaL2Bits: ", arenaL2Bits)
+		println("arenaL1Shift: ", arenaL1Shift)
+		println("arenaBits: ", arenaBits)
+		println("arenaBaseOffset: ", arenaBaseOffset)
+
 	}
 }
 
