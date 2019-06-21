@@ -942,7 +942,7 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 	h := heapBitsForAddr(x)
 	ptrmask := typ.gcdata // start of 1-bit pointer mask (or GC program, handled below)
 	if debug.mytrace > 0 {
-		println("heapBitsForAddr h: ", h, *h.bitp, h.shift, h.arena, *h.last)
+		println("heapBitsForAddr h: ", *h.bitp, h.shift, h.arena, *h.last)
 	}
 	// Heap bitmap bits for 2-word object are only 4 bits,
 	// so also shared with objects next to it.
