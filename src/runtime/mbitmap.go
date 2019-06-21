@@ -918,7 +918,9 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 	//
 	// The checks for size == sys.PtrSize and size == 2*sys.PtrSize can therefore
 	// assume that dataSize == size without checking it explicitly.
-
+	if debug.mytrace > 1 {
+		print("mytrace heapBitsSetType : ", x, size, dataSize, typ, typ.kind)
+	}
 	if sys.PtrSize == 8 && size == sys.PtrSize {
 		// It's one word and it has pointers, it must be a pointer.
 		// Since all allocated one-word objects are pointers

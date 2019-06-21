@@ -329,6 +329,7 @@ var debug struct {
 	scheddetail        int32
 	schedtrace         int32
 	tracebackancestors int32
+	mytrace			   int32
 }
 
 var dbgvars = []dbgVar{
@@ -347,6 +348,7 @@ var dbgvars = []dbgVar{
 	{"scheddetail", &debug.scheddetail},
 	{"schedtrace", &debug.schedtrace},
 	{"tracebackancestors", &debug.tracebackancestors},
+	{"mytrace", &debug.mytrace},
 }
 
 func parsedebugvars() {
