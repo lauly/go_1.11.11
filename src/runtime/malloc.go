@@ -509,20 +509,6 @@ func mallocinit() {
 		hint.addr = p
 		hint.next, mheap_.arenaHints = mheap_.arenaHints, hint
 	}
-	if debug.mytrace == 1 {
-		println("heapAddrBits: ", heapAddrBits)
-		println("maxAlloc: ", maxAlloc)
-		println("heapArenaBytes: ", heapArenaBytes)
-		println("logHeapArenaBytes: ", logHeapArenaBytes)
-		println("heapArenaBitmapBytes: ", heapArenaBitmapBytes)
-		println("pagesPerArena: ", pagesPerArena)
-		println("arenaL1Bits: ", arenaL1Bits)
-		println("arenaL2Bits: ", arenaL2Bits)
-		println("arenaL1Shift: ", arenaL1Shift)
-		println("arenaBits: ", arenaBits)
-		println("arenaBaseOffset: ", arenaBaseOffset)
-
-	}
 }
 
 // sysAlloc allocates heap arena space for at least n bytes. The

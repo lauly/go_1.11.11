@@ -106,6 +106,23 @@ var runtimeInitTime int64
 // Value to use for signal mask for newly created M's.
 var initSigmask sigset
 
+func myPrint() {
+	if debug.mytrace == 1 {
+		println("heapAddrBits: ", heapAddrBits)
+		println("maxAlloc: ", maxAlloc)
+		println("heapArenaBytes: ", heapArenaBytes)
+		println("logHeapArenaBytes: ", logHeapArenaBytes)
+		println("heapArenaBitmapBytes: ", heapArenaBitmapBytes)
+		println("pagesPerArena: ", pagesPerArena)
+		println("arenaL1Bits: ", arenaL1Bits)
+		println("arenaL2Bits: ", arenaL2Bits)
+		println("arenaL1Shift: ", arenaL1Shift)
+		println("arenaBits: ", arenaBits)
+		println("arenaBaseOffset: ", arenaBaseOffset)
+
+	}
+}
+
 // The main goroutine.
 func main() {
 	g := getg()
@@ -198,6 +215,7 @@ func main() {
 		return
 	}
 	fn = main_main // make an indirect call, as the linker doesn't know the address of the main package when laying down the runtime
+	myPrint()
 	fn()
 	if raceenabled {
 		racefini()
