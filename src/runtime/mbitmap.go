@@ -920,7 +920,7 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 	// assume that dataSize == size without checking it explicitly.
 	if debug.mytrace > 0 {
 		println("mytrace heapBitsSetType x: ",hex(x), "size:" , size, "dataSize:" ,
-			dataSize, "typ: ", typ, "typ.kind: ", typ.kind, "typ.gcdata:", typ.gcdata)
+			dataSize, "typ: ", typ, "typ.kind: ", typ.kind, "typ.gcdata:", *typ.gcdata, "typ.size: ", typ.size)
 	}
 	if sys.PtrSize == 8 && size == sys.PtrSize {
 		// It's one word and it has pointers, it must be a pointer.
@@ -941,7 +941,9 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 
 	h := heapBitsForAddr(x)
 	ptrmask := typ.gcdata // start of 1-bit pointer mask (or GC program, handled below)
-
+	if debug.mytrace > 0 {
+		println("heapBitsForAddr h: ", h, *h.bitp, h.shift, h.arena, *h.last)
+	}
 	// Heap bitmap bits for 2-word object are only 4 bits,
 	// so also shared with objects next to it.
 	// This is called out as a special case primarily for 32-bit systems,
