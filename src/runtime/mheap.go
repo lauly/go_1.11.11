@@ -427,6 +427,9 @@ func (sc spanClass) noscan() bool {
 //
 //go:nosplit
 func arenaIndex(p uintptr) arenaIdx {
+	if debug.mytrace == 1 {
+		println("arenaIndex: ", p, hex(p), arenaIdx((p + arenaBaseOffset) / heapArenaBytes))
+	}
 	return arenaIdx((p + arenaBaseOffset) / heapArenaBytes)
 }
 
