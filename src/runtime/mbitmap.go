@@ -919,8 +919,9 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 	// The checks for size == sys.PtrSize and size == 2*sys.PtrSize can therefore
 	// assume that dataSize == size without checking it explicitly.
 	if debug.mytrace == 1 {
-		println("mytrace heapBitsSetType x: ",hex(x), "size:" , size, "dataSize:" ,
-			dataSize, "typ: ", typ, "typ.kind: ", typ.kind, "typ.gcdata:", *typ.gcdata, "typ.size: ", typ.size)
+		println("mytrace heapBitsSetType x:", hex(x), "size:", size, "dataSize:" , dataSize,
+			"typ:", typ, "typ.kind: ", typ.kind, "typ.gcdata:", *typ.gcdata, "typ.size:", typ.size,
+			"ptrdata:", typ.ptrdata)
 	}
 	if sys.PtrSize == 8 && size == sys.PtrSize {
 		// It's one word and it has pointers, it must be a pointer.
@@ -995,7 +996,9 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 	// In general, one load can supply two bitmap byte writes.
 	// This is a lot of lines of code, but it compiles into relatively few
 	// machine instructions.
-
+	if debug.mytrace == 1{
+		println("arenaIndex(x+size-1) ", arenaIndex(x+size-1), ", arenaIdx(h.arena): ", arenaIdx(h.arena))
+	}
 	outOfPlace := false
 	if arenaIndex(x+size-1) != arenaIdx(h.arena) || (doubleCheck && fastrand()%2 == 0) {
 		// This object spans heap arenas, so the bitmap may be
@@ -1139,6 +1142,9 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 			endnb = typ.size/sys.PtrSize - n*8
 		}
 	}
+	if debug.mytrace == 1{
+		println("p != nil: ", p != nil)
+	}
 	if p != nil {
 		b = uintptr(*p)
 		p = add1(p)
@@ -1153,6 +1159,9 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 		// Have to process first N-1 entries in full, but can stop
 		// once we reach the non-pointer data in the final entry.
 		nw = ((dataSize/typ.size-1)*typ.size + typ.ptrdata) / sys.PtrSize
+	}
+	if debug.mytrace == 1{
+		println("typ.size =- dataSize: ", typ.size == dataSize, ", nw: ", nw)
 	}
 	if nw == 0 {
 		// No pointers! Caller was supposed to check.
@@ -1190,6 +1199,9 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 		//
 		// TODO: It doesn't matter if we set the checkmark, so
 		// maybe this case isn't needed any more.
+		if debug.mytrace == 1 {
+			println("switch h.shift == 0: ", b, w, nw)
+		}
 		hb = b & bitPointerAll
 		hb |= bitScan | bitScan<<(2*heapBitsShift) | bitScan<<(3*heapBitsShift)
 		if w += 4; w >= nw {

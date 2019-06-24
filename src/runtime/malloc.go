@@ -241,6 +241,8 @@ const (
 	// This is particularly important with the race detector,
 	// since it significantly amplifies the cost of committed
 	// memory.
+	// 64位linux操作系统，每次申请一块heapArena大小是64MB
+	// linux64位环境时，heapArenaBytes=67108864
 	heapArenaBytes = 1 << logHeapArenaBytes
 
 	// logHeapArenaBytes is log_2 of heapArenaBytes. For clarity,
@@ -249,6 +251,8 @@ const (
 	logHeapArenaBytes = (6+20)*(_64bit*(1-sys.GoosWindows)) + (2+20)*(_64bit*sys.GoosWindows) + (2+20)*(1-_64bit)
 
 	// heapArenaBitmapBytes is the size of each heap arena's bitmap.
+	//一个指针8byte需要2个bit来管理，所以一块64MB大小的heapArenaBytes需要2MB的bitmap内存
+	//linux64位环境值时，heapArenaBitmapBytes=2097152（2MB）
 	heapArenaBitmapBytes = heapArenaBytes / (sys.PtrSize * 8 / 2)
 
 	pagesPerArena = heapArenaBytes / pageSize
