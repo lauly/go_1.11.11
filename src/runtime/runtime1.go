@@ -329,14 +329,14 @@ var debug struct {
 	scheddetail        int32
 	schedtrace         int32
 	tracebackancestors int32
-	mytrace            myDebugleve
+	mytrace            int32
 }
 
 type myDebugleve int32
 
 const (
 	//GC标记bitmap打印的日志
-	gcMarkBitmap myDebugleve = iota + 1
+	gcMarkBitmap int32 = iota + 1
 	//map打印
 	Map
 )
