@@ -107,7 +107,7 @@ var runtimeInitTime int64
 var initSigmask sigset
 
 func myPrint() {
-	if debug.mytrace == 1 {
+	if debug.mytrace == gcMarkBitmap {
 		println("heapAddrBits: ", heapAddrBits)
 		println("maxAlloc: ", maxAlloc)
 		println("heapArenaBytes: ", heapArenaBytes)

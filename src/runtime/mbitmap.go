@@ -918,8 +918,8 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 	//
 	// The checks for size == sys.PtrSize and size == 2*sys.PtrSize can therefore
 	// assume that dataSize == size without checking it explicitly.
-	if debug.mytrace == 1 {
-		println("mytrace heapBitsSetType x:", hex(x), "size:", size, "dataSize:" , dataSize,
+	if debug.mytrace == gcMarkBitmap {
+		println("mytrace heapBitsSetType x:", hex(x), "size:", size, "dataSize:", dataSize,
 			"typ:", typ, "typ.kind: ", typ.kind, "typ.gcdata:", *typ.gcdata, "typ.size:", typ.size,
 			"ptrdata:", typ.ptrdata)
 	}
@@ -942,7 +942,7 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 
 	h := heapBitsForAddr(x)
 	ptrmask := typ.gcdata // start of 1-bit pointer mask (or GC program, handled below)
-	if debug.mytrace == 1 {
+	if debug.mytrace == gcMarkBitmap {
 		println("heapBitsForAddr h: ", h.bitp, *h.bitp, h.shift, h.arena, *h.last, h.last)
 	}
 	// Heap bitmap bits for 2-word object are only 4 bits,
@@ -996,7 +996,7 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 	// In general, one load can supply two bitmap byte writes.
 	// This is a lot of lines of code, but it compiles into relatively few
 	// machine instructions.
-	if debug.mytrace == 1{
+	if debug.mytrace == gcMarkBitmap {
 		println("arenaIndex(x+size-1) ", arenaIndex(x+size-1), ", arenaIdx(h.arena): ", arenaIdx(h.arena))
 	}
 	outOfPlace := false
@@ -1142,7 +1142,7 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 			endnb = typ.size/sys.PtrSize - n*8
 		}
 	}
-	if debug.mytrace == 1{
+	if debug.mytrace == gcMarkBitmap {
 		println("p != nil: ", p != nil)
 	}
 	if p != nil {
@@ -1160,7 +1160,7 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 		// once we reach the non-pointer data in the final entry.
 		nw = ((dataSize/typ.size-1)*typ.size + typ.ptrdata) / sys.PtrSize
 	}
-	if debug.mytrace == 1{
+	if debug.mytrace == gcMarkBitmap {
 		println("typ.size =- dataSize: ", typ.size == dataSize, ", nw: ", nw)
 	}
 	if nw == 0 {
@@ -1199,7 +1199,7 @@ func heapBitsSetType(x, size, dataSize uintptr, typ *_type) {
 		//
 		// TODO: It doesn't matter if we set the checkmark, so
 		// maybe this case isn't needed any more.
-		if debug.mytrace == 1 {
+		if debug.mytrace == gcMarkBitmap {
 			println("switch h.shift == 0: ", b, w, nw)
 		}
 		hb = b & bitPointerAll

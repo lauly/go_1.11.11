@@ -278,6 +278,9 @@ func makemap64(t *maptype, hint int64, h *hmap) *hmap {
 	if int64(int(hint)) != hint {
 		hint = 0
 	}
+	if debug.mytrace == Map {
+		println("makemap64: ", t, int(hint), h)
+	}
 	return makemap(t, int(hint), h)
 }
 
@@ -305,14 +308,15 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {
 		h = new(hmap)
 	}
 	h.hash0 = fastrand()
-
 	// find size parameter which will hold the requested # of elements
 	B := uint8(0)
 	for overLoadFactor(hint, B) {
 		B++
 	}
 	h.B = B
-
+	if debug.mytrace == Map {
+		println("makemap fastrand: ", h.hash0, h.B)
+	}
 	// allocate initial hash table
 	// if B == 0, the buckets field is allocated lazily later (in mapassign)
 	// If hint is large zeroing this memory could take a while.
@@ -547,6 +551,9 @@ func mapaccess2_fat(t *maptype, h *hmap, key, zero unsafe.Pointer) (unsafe.Point
 
 // Like mapaccess, but allocates a slot for the key if it is not present in the map.
 func mapassign(t *maptype, h *hmap, key unsafe.Pointer) unsafe.Pointer {
+	if debug.mytrace == Map {
+		println("mapassign: ", h.hash0, h.B)
+	}
 	if h == nil {
 		panic(plainError("assignment to entry in nil map"))
 	}

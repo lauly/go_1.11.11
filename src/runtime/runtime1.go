@@ -329,8 +329,17 @@ var debug struct {
 	scheddetail        int32
 	schedtrace         int32
 	tracebackancestors int32
-	mytrace			   int32
+	mytrace            myDebugleve
 }
+
+type myDebugleve int32
+
+const (
+	//GC标记bitmap打印的日志
+	gcMarkBitmap myDebugleve = iota + 1
+	//map打印
+	Map
+)
 
 var dbgvars = []dbgVar{
 	{"allocfreetrace", &debug.allocfreetrace},
