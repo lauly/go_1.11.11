@@ -315,7 +315,7 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {
 	}
 	h.B = B
 	if debug.mytrace == Map {
-		println("makemap fastrand: ", h.hash0, h.B)
+		println("makemap fastrand: ", h.hash0, h.B, hint)
 	}
 	// allocate initial hash table
 	// if B == 0, the buckets field is allocated lazily later (in mapassign)
