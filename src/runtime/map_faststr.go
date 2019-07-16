@@ -200,7 +200,10 @@ func mapassign_faststr(t *maptype, h *hmap, s string) unsafe.Pointer {
 	}
 	key := stringStructOf(&s)
 	hash := t.key.alg.hash(noescape(unsafe.Pointer(&s)), uintptr(h.hash0))
-
+	if debug.mytrace == Map {
+		println("mapassign_faststr key:[", key, "]", "hash:[", hash, "]", "map.hash0:[", h.hash0, "]",
+			"map.B:[", h.B, "]", "map.count:[", h.count, "]", "map.flags:[", h.flags, "]")
+	}
 	// Set hashWriting after calling alg.hash for consistency with mapassign.
 	h.flags |= hashWriting
 
